@@ -39,7 +39,15 @@ public abstract class BaseController {
     protected ResponseEntity<ApiResponseDto<?>> badRequest(String message) {
         return errorResponse(400, message);
     }
-    
+
+    /**
+     * 401 Bad Request 응답
+     */
+    protected ResponseEntity<ApiResponseDto<?>> unauthorized(String message) {
+        return errorResponse(401, message);
+    }
+
+
     /**
      * 404 Not Found 응답
      */

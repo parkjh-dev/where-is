@@ -119,4 +119,14 @@ public class UserService {
 
         return result;
     }
+
+
+    public User validateLogin(String email, String password) {
+        User user = userRepository.findByEmail(email);
+        if(user == null) return null;
+
+        boolean passwordValidate = password.equals(user.getPw());
+        if (! passwordValidate) return null;
+        else return user;
+    }
 }

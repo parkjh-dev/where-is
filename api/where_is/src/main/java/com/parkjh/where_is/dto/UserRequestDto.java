@@ -1,25 +1,21 @@
 package com.parkjh.where_is.dto;
 
+import com.google.common.hash.Hashing;
 import com.parkjh.where_is.domain.User;
 import lombok.Getter;
+
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
+@Getter
 public class UserRequestDto {
-    @Getter
     private String name;
-    @Getter
     private String email;
-    @Getter
     private String phone;
-    @Getter
     private String pw;
-    @Getter
     private int roleId;
-    @Getter
     private String nickname;
-    @Getter
     private String profileImag;
-    @Getter
     private LocalDate birthday;
 
     // 생성자
@@ -30,7 +26,9 @@ public class UserRequestDto {
         this.name = name;
         this.email = email;
         this.phone = phone;
-        this.pw = pw;
+        this.pw = Hashing.sha256()
+                .hashString(pw, StandardCharsets.UTF_8)
+                .toString();
         this.roleId = roleId;
         this.nickname = nickname;
         this.profileImag = profileImag;
