@@ -1,34 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import './App.css'
+import BasicLayout from './components/layout/BasicLayout'
+import LoginEmail from './pages/auth/LoginEmail'
+import LoginMain from './pages/auth/LoginMain'
+import NotFound from './pages/NotFound'
+import Main from './pages/main'
+import Detail from './pages/Detail'
+import DetailSummary from './pages/DetailSummary'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+
+      <Router>
+        <Routes>
+          {/* 일반 페이지 레이아웃 */}
+          <Route element={<BasicLayout />}>
+            <Route path="/auth/login/main" element={<LoginMain />} />
+            <Route path="/auth/login/email" element={<LoginEmail />} />
+            <Route path="/" element={<Main />} />
+            <Route path="/smoking-area/:id" element={<Detail />} />
+            <Route path="/smoking-area/:id/summary" element={<DetailSummary />} />
+          </Route>
+          {/* 404 페이지 - 정의되지 않은 모든 경로 */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+
   )
 }
 

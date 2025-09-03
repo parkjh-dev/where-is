@@ -1,29 +1,19 @@
-# Where Is - 위치 기반 서비스 플랫폼
+# 🚀 Where Is - 위치 기반 서비스 플랫폼
 
-## 프로젝트 소개
+## 📖 Introduction
 Where Is는 사용자들이 주변의 흡연 구역, 화장실, 쓰레기통 등의 위치 정보를 공유하고 찾을 수 있는 위치 기반 서비스 플랫폼입니다.
 
-## 기술 스택
+## 🏗️ Service Architecture
+This project is structured into four main services:
+- **Frontend**: React / Next.js  
+- **Backend**: Spring Boot (Java)  
+- **Database**: MySQL  
+- **Infrastructure**: Docker & Docker Compose  
 
-### Backend
-- **Java 17**
-- **Spring Boot 3.x**
-- **Spring Security**
-- **Spring Data JPA**
-- **QueryDSL**
-- **MySQL 8.0**
-- **Gradle**
+<!-- Diagram Example -->
+<!-- ![Architecture Diagram](./docs/architecture.png) -->
 
-### Frontend
-- **React 18**
-- **Vite**
-- **ESLint**
-
-### Infrastructure
-- **Docker**
-- **Docker Compose**
-
-## 프로젝트 구조
+## 📂 Directory Structure
 ```
 where_is/
 ├── api/where_is/          # Spring Boot 백엔드
@@ -33,37 +23,51 @@ where_is/
 └── doc/                   # 문서
 ```
 
-## 설치 및 실행 방법
+## 🔌 Port Mapping
+| Service    | Port  |
+|------------|-------|
+| Frontend   | 3000  |
+| Backend    | 8080  |
+| Database   | 3306  |
 
-### 1. 데이터베이스 실행
+## 📦 Dependencies
+| Technology    | Version |
+|---------------|---------|
+| Spring Boot   | 3.0     |
+| Java          | 17.0     |
+| React         | 18.0     |
+| Next.js       | 1.0     |
+| MySQL         | 8.0     |
+| Docker/Compose| 1.0     |
+
+## ⚙️ Setup & Run
+
+### 1. Clone Repository
 ```bash
-cd db
-docker-compose up -d
+git clone https://github.com/username/project-name.git
+cd project-name
 ```
 
-### 2. 백엔드 실행
+### 2. Backend Setup
 ```bash
 cd api/where_is
 ./gradlew bootRun
 ```
 
-### 3. 프론트엔드 실행
+### 3. Frontend Setup
 ```bash
 cd web/where_is
 npm install
 npm run dev
 ```
 
-## API 문서
-- Swagger UI: http://localhost:8080/swagger-ui.html
+### 4. Database
+```bash
+cd db
+docker-compose up -d
+```
 
-## 주요 기능
-- 사용자 인증 및 권한 관리
-- 흡연 구역 정보 관리
-- 화장실 위치 정보 관리
-- 쓰레기통 위치 정보 관리
-- 댓글 및 좋아요 기능
-- 신고 및 요청 기능
-
-## 라이선스
-이 프로젝트는 MIT 라이선스 하에 배포됩니다.
+### 5. Access
+- Frontend: [http://localhost:3000](http://localhost:3000)  
+- Backend: [http://localhost:8080](http://localhost:8080) 
+- swagger: [http://localhost:8080/swagger-ui.html] (http://localhost:8080/swagger-ui.html)
