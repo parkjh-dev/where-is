@@ -1,0 +1,1 @@
+cp ./mysql/* ../db/init/

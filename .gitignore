@@ -91,6 +91,7 @@ build/
 *.db
 *.sqlite
 *.sqlite3
+db/init/*
 db/data/
 db/data/*
 *.ibd
