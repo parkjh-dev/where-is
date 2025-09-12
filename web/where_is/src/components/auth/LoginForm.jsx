@@ -1,7 +1,12 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import CancelButton from '../CancelButton';
+import EmailLoginButton from '../EmailLoginButton';
+import KakaoLoginButton from '../KakaoLoginButton';
 
 const LoginForm = ({ 
+  isOpen = false,
+  onClose,
   onKakaoLogin,
   onEmailLogin,
   onSignUp,
@@ -10,48 +15,55 @@ const LoginForm = ({
   className = ""
 }) => {
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (onEmailLogin) {
-      onEmailLogin()
+      onEmailLogin();
     }
-  }
+  };
+
+  if (!isOpen) return null;
 
   return (
-    <div className={`space-y-8 ${className}`}>
-      {/* 제목 */}
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">로그인</h1>
-        <p className="text-gray-600">Where is 계정으로 로그인하세요</p>
-      </div>
+    <div className="fixed inset-0 z-[9999]">
+      {/* 오버레이 */}
+      <div
+        className="absolute inset-0 bg-black bg-opacity-50"
+        onClick={onClose}
+      />
+      
+      {/* 하단 슬라이드 모달 */}
+      <div className="absolute inset-x-0 bottom-0 mx-auto w-full max-w-[360px] sm:max-w-[380px] md:max-w-[400px] lg:max-w-[480px] px-4 pb-4">
+        <div className="bg-white rounded-t-xl shadow-lg border border-gray-200 transform transition-transform duration-300 ease-out translate-y-0 p-4 sm:p-6">
+          {/* 헤더 */}
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-800">로그인</h2>
+            <CancelButton onClick={onClose} />
+          </div>
 
-      <div className="space-y-4">
-        <button 
-          onClick={onKakaoLogin}
-          className="w-full bg-[#FEE500] hover:bg-[#FDD800] text-[#000000]/85 py-3 px-6 rounded-xl font-semibold transition-all duration-200 hover:shadow-lg active:scale-95 flex items-center relative border border-transparent hover:border-[#FDD800]"
-        >
-          <img src="/pictogram/kakao.png" alt="카카오" className="w-5 h-5 absolute left-6" />
-          <span className="w-full text-center">카카오 로그인</span>
-        </button>
+          {/* 로그인 폼 */}
+          <div className={`space-y-6 ${className}`}>
+            <p className="text-center text-gray-600 text-sm">Where is 계정으로 로그인하세요</p>
 
-        <Link 
-          to="/auth/login/email"
-          className="w-full bg-gray-200 hover:bg-gray-400 text-gray-800 py-3 px-6 rounded-xl font-semibold transition-all duration-200 hover:shadow-lg active:scale-95 flex items-center relative border border-transparent hover:border-gray-400"
-        >
-          <img src="/pictogram/mail.png" alt="이메일" className="w-5 h-5 absolute left-6" />
-          <span className="w-full text-center">이메일로 로그인</span>
-        </Link>
-      </div>
+            <div className="space-y-3">
+              <KakaoLoginButton onClick={onKakaoLogin} />
+              <EmailLoginButton onClick={onEmailLogin} />
+            </div>
 
-      {/* 회원가입 */}
-      <div className="text-center pt-4">
-        <span className="text-gray-600 text-sm">계정이 없으신가요? </span>
-        <a 
-          href="http://www.naver.com"
-          className="text-cyan-600 hover:text-cyan-700 font-medium text-sm underline underline-offset-2 hover:no-underline transition-all duration-200"
-        >회원가입</a>
+            {/* 회원가입 */}
+            <div className="text-center pt-2">
+              <span className="text-gray-600 text-sm">계정이 없으신가요? </span>
+              <Link 
+                to="/auth/login/email/register"
+                className="text-cyan-600 hover:text-cyan-700 font-medium text-sm underline underline-offset-2 hover:no-underline transition-all duration-200"
+              >
+                회원가입
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm 
+export default LoginForm; 

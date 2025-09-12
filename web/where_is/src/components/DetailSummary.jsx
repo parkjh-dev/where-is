@@ -1,12 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react'
 import DetailSummaryForm from './DetailSummaryForm'
 
-const DetailSummary = ({ isOpen, onClose, facilityData, onRestoreMapPosition }) => {
+const DetailSummary = ({ isOpen, onClose, facilityData, onRestoreMapPosition, onOpenReportModal }) => {
   const [isDragging, setIsDragging] = useState(false)
   const [startY, setStartY] = useState(0)
   const [currentY, setCurrentY] = useState(0)
   const [dragDirection, setDragDirection] = useState('') // 'up', 'down', ''
   const modalRef = useRef(null)
+
+  const facilityData1 = {
+    subject: "수원월드컵경기장 축구공 감동",
+    type: "Toilet",
+    roadnm_addr: "경기 수원시 팔달구 우만동 222",
+    operatingHours: "00:00 ~ 23:59",
+    agencyContact: "031-0000-0000",
+    managingAgency: "(재)경기도수원월드컵경기장관리재단 시설운영팀",
+    reviewCount: 10,
+    starRating: 4.5
+  }
 
   const handleTouchStart = (e) => {
     setIsDragging(true)
@@ -144,7 +155,10 @@ const DetailSummary = ({ isOpen, onClose, facilityData, onRestoreMapPosition }) 
             )}
           </div>
 
-          <DetailSummaryForm onRestoreMapPosition={onRestoreMapPosition} />
+          <DetailSummaryForm 
+            onOpenReportModal={onOpenReportModal}
+            facilityData={facilityData1}
+          />
 
         </div>
       </div>
