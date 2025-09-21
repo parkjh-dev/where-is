@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FACILITY_COLORS } from '../constants/facilityTypes.js';
 
 function SearchAndFilter() {
   const [activeFilters, setActiveFilters] = useState({
@@ -41,7 +42,7 @@ function SearchAndFilter() {
               ? 'text-white border border-gray-300 hover:opacity-80' 
               : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
           }`}
-          style={activeFilters.toilet ? { backgroundColor: '#A1D6CB' } : {}}
+          style={activeFilters.toilet ? { backgroundColor: FACILITY_COLORS.TOILET } : {}}
         >
           Toilet
         </button>
@@ -52,7 +53,7 @@ function SearchAndFilter() {
               ? 'text-white border border-gray-300 hover:opacity-80' 
               : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
           }`}
-          style={activeFilters.smoking ? { backgroundColor: '#A19AD3' } : {}}
+          style={activeFilters.smoking ? { backgroundColor: FACILITY_COLORS.SMOKING } : {}}
         >
           Smoking-Area
         </button>
@@ -63,7 +64,7 @@ function SearchAndFilter() {
               ? 'text-white border border-gray-300 hover:opacity-80' 
               : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
           }`}
-          style={activeFilters.trash ? { backgroundColor: '#FF8383' } : {}}
+          style={activeFilters.trash ? { backgroundColor: FACILITY_COLORS.TRASH } : {}}
         >
           Trash-Can
         </button>

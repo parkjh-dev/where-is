@@ -14,7 +14,6 @@ import PlaceRequest from './pages/PlaceRequest'
 
 function App() {
   return (
-
       <Router>
         <Routes>
           {/* 일반 페이지 레이아웃 */}
@@ -26,6 +25,10 @@ function App() {
             <Route path="/" element={<Main />} />
             <Route path="/smoking-area/:id" element={<Detail />} />
             <Route path="/smoking-area/:id/summary" element={<DetailSummary />} />
+            <Route path="/trash-can/:id" element={<Detail />} />
+            <Route path="/trash-can/:id/summary" element={<DetailSummary />} />
+            <Route path="/toilet/:id" element={<Detail />} />
+            <Route path="/toilet/:id/summary" element={<DetailSummary />} />
             <Route path="/report" element={<PlaceReport />} />
             <Route path="/request" element={<PlaceRequest />} />
           </Route>

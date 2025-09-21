@@ -1,15 +1,18 @@
 import React from 'react'
 import SirenButton from './SirenButton'
 import StarRating from './StarRating'
+import { FACILITY_COLORS } from '../constants/facilityTypes.js';
 
 const DetailSummaryForm = ({ onOpenReportModal, facilityData }) => {
+  const type = facilityData.type.toUpperCase();
+
   return (
     <div className="bg-white p-4 border-b border-gray-200">
     <div className="mb-4">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center space-x-2">
-          <h1 className="text-xl font-bold text-gray-800">{facilityData.subject}</h1>
-          <span className="text-white px-2 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: '#A1D6CB' }}>{facilityData.type}</span>
+          <h1 className="text-xl font-bold text-gray-800">{facilityData.name}</h1>
+          <span className="text-white px-2 py-1 rounded-full text-xs font-medium" style={{ backgroundColor: FACILITY_COLORS[type] }}>{facilityData.type}</span>
         </div>
         <SirenButton onClick={onOpenReportModal} />
     </div>
@@ -30,7 +33,7 @@ const DetailSummaryForm = ({ onOpenReportModal, facilityData }) => {
             <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
           </svg>
         </div>
-        <span className="text-gray-700">{facilityData.roadnm_addr}</span>
+        <span className="text-gray-700">{facilityData.roadnmAddr}</span>
       </div>
       
       <div className="flex items-start space-x-3">

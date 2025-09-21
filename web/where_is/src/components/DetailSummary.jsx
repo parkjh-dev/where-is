@@ -1,23 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import DetailSummaryForm from './DetailSummaryForm'
 
 const DetailSummary = ({ isOpen, onClose, facilityData, onRestoreMapPosition, onOpenReportModal }) => {
+  const navigate = useNavigate()
   const [isDragging, setIsDragging] = useState(false)
   const [startY, setStartY] = useState(0)
   const [currentY, setCurrentY] = useState(0)
   const [dragDirection, setDragDirection] = useState('') // 'up', 'down', ''
   const modalRef = useRef(null)
 
-  const facilityData1 = {
-    subject: "수원월드컵경기장 축구공 감동",
-    type: "Toilet",
-    roadnm_addr: "경기 수원시 팔달구 우만동 222",
-    operatingHours: "00:00 ~ 23:59",
-    agencyContact: "031-0000-0000",
-    managingAgency: "(재)경기도수원월드컵경기장관리재단 시설운영팀",
-    reviewCount: 10,
-    starRating: 4.5
-  }
 
   const handleTouchStart = (e) => {
     setIsDragging(true)
@@ -54,7 +46,23 @@ const DetailSummary = ({ isOpen, onClose, facilityData, onRestoreMapPosition, on
     } else if (deltaY < -100) { // 100px 이상 위로 드래그하면 DetailForm으로 이동
       // 자연스러운 전환을 위해 애니메이션 후 이동
       setTimeout(() => {
-        window.location.href = `/smoking-area/${facilityData?.id}`
+        const getRouteByType = (type) => {
+          switch (type) {
+            case 'smoking':
+              return 'smoking-area';
+            case 'toilet':
+              return 'toilet';
+            case 'trash':
+              return 'trash-can';
+            default:
+              return 'toilet'; // 기본값
+          }
+        };
+        
+        const route = getRouteByType(facilityData?.type);
+        navigate(`/${route}/${facilityData?.id}`, {
+          state: { facilityData }
+        })
       }, 200)
     }
     setDragDirection('')
@@ -95,8 +103,26 @@ const DetailSummary = ({ isOpen, onClose, facilityData, onRestoreMapPosition, on
         onClose()
       } else if (deltaY < -100) {
         // 자연스러운 전환을 위해 애니메이션 후 이동
+
+        
         setTimeout(() => {
-          window.location.href = `/smoking-area/${facilityData?.id}`
+          const getRouteByType = (type) => {
+            switch (type) {
+              case 'smoking':
+                return 'smoking-area';
+              case 'toilet':
+                return 'toilet';
+              case 'trash':
+                return 'trash-can';
+              default:
+                return 'toilet'; // 기본값
+            }
+          };
+          
+          const route = getRouteByType(facilityData?.type);
+          navigate(`/${route}/${facilityData?.id}`, {
+            state: { facilityData }
+          })
         }, 200)
       }
       setDragDirection('')
@@ -157,7 +183,7 @@ const DetailSummary = ({ isOpen, onClose, facilityData, onRestoreMapPosition, on
 
           <DetailSummaryForm 
             onOpenReportModal={onOpenReportModal}
-            facilityData={facilityData1}
+            facilityData={facilityData}
           />
 
         </div>
