@@ -6,7 +6,8 @@ import FacilityImage from './FacilityImage'
 
 const DetailForm = ({ facilityData, reviewDataList}) => {
   const [selectedRating, setSelectedRating] = useState(0)
-  
+  const s3BaseURL = import.meta.env.VITE_S3_BASE_URL;
+
   return (
     <div className="min-h-full bg-gray-50">
       {/* 상단 바 */}
@@ -15,7 +16,7 @@ const DetailForm = ({ facilityData, reviewDataList}) => {
       </div>
 
     {/* 이미지 섹션 */}
-    <FacilityImage imagePath="/example_img.JPG"/>
+    <FacilityImage imagePath={`${s3BaseURL}/${facilityData.facilityImage}`}/>
 
     {/* 상세 정보 섹션 */}
     <DetailSummaryForm 

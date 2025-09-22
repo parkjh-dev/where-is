@@ -3,7 +3,6 @@ import MenuForm from '../MenuForm'
 import LoginForm from '../auth/LoginForm'
 import MenuButton from '../MenuButton'
 
-
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef(null)

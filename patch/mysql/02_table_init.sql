@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `profile_img` varchar(255) COMMENT '프로필 이미지',
   `birthday` date COMMENT '생일',
   `pw` varchar(255) NOT NULL COMMENT '패스워드',
-  `role_id` varchar(255) NOT NULL COMMENT 'role fk',
+  `role_id` integer NOT NULL COMMENT 'role fk',
   `is_locked` TINYINT COMMENT '계정 잠금',
   `login_fail_cnt` integer COMMENT '로그인 실패 횟수',
   `last_login_fail_dt` timestamp COMMENT '최근 로그인 실패 시간',
@@ -36,6 +36,8 @@ CREATE TABLE IF NOT EXISTS `trash_can_area` (
   `roadnm_addr` varchar(255) COMMENT '도로명 주소',
   `lotno_addr` varchar(255) COMMENT '지번 주소',
   `operating_hours` varchar(255) COMMENT '개방 시간',
+  `facility_image` varchar(255) COMMENT '시설 이미지',
+  `origin` CHAR(6) COMMENT '원본 데이터 출처',
   `add_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
   `mod_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일'
 );
@@ -50,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `trash_can_area_requests` (
   `roadnm_addr` varchar(255) COMMENT '도로명 주소',
   `lotno_addr` varchar(255) COMMENT '지번 주소',
   `operating_hours` varchar(255) COMMENT '개방 시간',
+  `facility_image` varchar(255) COMMENT '시설 이미지',
   `add_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
   `mod_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일'
 );
@@ -91,6 +94,8 @@ CREATE TABLE IF NOT EXISTS `smoking_area` (
   `roadnm_addr` varchar(255) COMMENT '도로명 주소',
   `lotno_addr` varchar(255) COMMENT '지번 주소',
   `operating_hours` varchar(255) COMMENT '개방 시간',
+  `facility_image` varchar(255) COMMENT '시설 이미지',
+  `origin` CHAR(6) COMMENT '원본 데이터 출처',
   `add_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
   `mod_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일'
 );
@@ -105,6 +110,7 @@ CREATE TABLE IF NOT EXISTS `smoking_area_requests` (
   `roadnm_addr` varchar(255) COMMENT '도로명 주소',
   `lotno_addr` varchar(255) COMMENT '지번 주소',
   `operating_hours` varchar(255) COMMENT '개방 시간',
+  `facility_image` varchar(255) COMMENT '시설 이미지',
   `add_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
   `mod_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일'
 );
@@ -146,6 +152,8 @@ CREATE TABLE IF NOT EXISTS `toilets_area` (
   `roadnm_addr` varchar(255) COMMENT '도로명 주소',
   `lotno_addr` varchar(255) COMMENT '지번 주소',
   `operating_hours` varchar(255) COMMENT '개방 시간',
+  `facility_image` varchar(255) COMMENT '시설 이미지',
+  `origin` CHAR(6) COMMENT '원본 데이터 출처',
   `add_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
   `mod_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일'
 );
@@ -160,6 +168,7 @@ CREATE TABLE IF NOT EXISTS `toilets_area_requests` (
   `roadnm_addr` varchar(255) COMMENT '도로명 주소',
   `lotno_addr` varchar(255) COMMENT '지번 주소',
   `operating_hours` varchar(255) COMMENT '개방 시간',
+  `facility_image` varchar(255) COMMENT '시설 이미지',
   `add_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
   `mod_dt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일'
 );
