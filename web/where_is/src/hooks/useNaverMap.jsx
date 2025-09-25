@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { renderToString } from 'react-dom/server';
 import MyLocationButton from '../components/MyLocationButton';
 
-const useNaverMap = (onMapReady) => {
+const useNaverMap = () => {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const naverMapBaseUrl = import.meta.env.VITE_NAVER_MAP_BASE_URL;
@@ -59,10 +59,6 @@ const useNaverMap = (onMapReady) => {
       // 현재 위치 버튼 추가
       setupCurrentLocationButton();
       
-      // 콜백 호출 (마커 생성 등)
-      if (onMapReady) {
-        onMapReady(mapInstanceRef.current);
-      }
     });
   };
 
