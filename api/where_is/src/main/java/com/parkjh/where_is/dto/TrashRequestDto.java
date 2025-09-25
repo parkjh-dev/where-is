@@ -13,6 +13,7 @@ public class TrashRequestDto {
     protected String roadnmAddr;
     protected String lotnoAddr;
     protected String operatingHours;
+    protected String facilityImage;
 
     // 기본 생성자 (Spring Boot 파라미터 바인딩용)
     public TrashRequestDto() {}
@@ -20,7 +21,7 @@ public class TrashRequestDto {
     public TrashRequestDto(
             String name, String longitude, String latitude,
             String managingAgency, String agencyContact, String roadnmAddr,
-            String lotnoAddr, String operatingHours
+            String lotnoAddr, String operatingHours, String facilityImage
     ) {
         this.name = name;
         this.longitude = longitude;
@@ -30,13 +31,14 @@ public class TrashRequestDto {
         this.roadnmAddr = roadnmAddr;
         this.lotnoAddr = lotnoAddr;
         this.operatingHours = operatingHours;
+        this.facilityImage = facilityImage;
     }
 
     public Trash toEntity() {
         return new Trash(
                 this.name, this.longitude, this.latitude,
                 this.managingAgency, this.agencyContact, this.roadnmAddr,
-                this.lotnoAddr, this.operatingHours,
+                this.lotnoAddr, this.operatingHours, this.facilityImage,
                 null, null
         );
     }

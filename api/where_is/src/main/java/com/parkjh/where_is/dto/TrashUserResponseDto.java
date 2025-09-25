@@ -12,12 +12,14 @@ public class TrashUserResponseDto extends TrashResponseDto{
             Long id, String name, String longitude,
             String latitude, String managingAgency, String agencyContact,
             String roadnmAddr, String lotnoAddr, String operatingHours,
+            String facilityImage,
             LocalDateTime modDt, LocalDateTime addDt
     ) {
         super(
                 id, name, longitude,
                 latitude, managingAgency, agencyContact,
                 roadnmAddr, lotnoAddr, operatingHours,
+                facilityImage,
                 modDt, addDt
         );
     }
@@ -33,6 +35,7 @@ public class TrashUserResponseDto extends TrashResponseDto{
                 entity.getRoadnmAddr(),
                 entity.getLotnoAddr(),
                 entity.getOperatingHours(),
+                entity.getFacilityImage(),
                 entity.getAddDt(),
                 entity.getModDt()
         );

@@ -30,6 +30,8 @@ public class Trash {
     private String lotnoAddr;
     @Column(name = "operating_hours")
     private String operatingHours;
+    @Column(name = "facility_image")
+    private String facilityImage;
     @JsonIgnore
     @Column(name = "mod_dt", updatable = true, insertable = false)
     private LocalDateTime modDt;
@@ -48,6 +50,7 @@ public class Trash {
              String name, String longitude,
              String latitude, String managingAgency, String agencyContact,
              String roadnmAddr, String lotnoAddr, String operatingHours,
+             String facilityImage,
              LocalDateTime modDt, LocalDateTime addDt
     ) {
         this.name = name;
@@ -58,6 +61,7 @@ public class Trash {
         this.roadnmAddr = roadnmAddr;
         this.lotnoAddr = lotnoAddr;
         this.operatingHours = operatingHours;
+        this.facilityImage = facilityImage;
         this.modDt = modDt;
         this.addDt = addDt;
     }

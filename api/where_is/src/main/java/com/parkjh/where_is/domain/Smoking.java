@@ -31,6 +31,8 @@ public class Smoking {
     private String lotnoAddr;
     @Column(name = "operating_hours")
     private String operatingHours;
+    @Column(name = "facility_image")
+    private String facilityImage;
     @JsonIgnore
     @Column(name = "mod_dt", updatable = true, insertable = false)
     private LocalDateTime modDt;

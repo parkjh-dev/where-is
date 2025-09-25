@@ -5,6 +5,7 @@ import com.parkjh.where_is.dto.TrashRequestDto;
 import com.parkjh.where_is.dto.TrashResponseDto;
 import com.parkjh.where_is.dto.TrashSearchDto;
 import com.parkjh.where_is.repository.TrashRepository;
+import com.parkjh.where_is.repository.TrashCommentsRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,11 +18,13 @@ import java.util.Optional;
 @Service
 public class TrashService {
     private final TrashRepository trashRepository;
-    public TrashService(TrashRepository trashRepository) {
+    private final TrashCommentsRepository trashCommentsRepository;
+    public TrashService(TrashRepository trashRepository, TrashCommentsRepository trashCommentsRepository) {
         this.trashRepository = trashRepository;
+        this.trashCommentsRepository = trashCommentsRepository;
     }
 
-    public Page<Trash> getList(TrashSearchDto query) {
+    public Page<TrashResponseDto> getList(TrashSearchDto query) {
         Sort sort = "desc".equalsIgnoreCase(query.getOrder())
                 ? Sort.by(query.getSort()).descending()
                 : Sort.by(query.getSort()).ascending();
@@ -32,8 +35,8 @@ public class TrashService {
                 sort
         );
         // 검색 조건이 있는 경우 동적 쿼리 생성
-        if (hasSearchCriteria(query)) {
-            return trashRepository.findTrashWithSearchCriteria(
+        Page<Trash> page = hasSearchCriteria(query)
+            ? trashRepository.findTrashWithSearchCriteria(
                     query.getName(),
                     query.getLongitude(),
                     query.getLatitude(),
@@ -43,10 +46,24 @@ public class TrashService {
                     query.getLotnoAddr(),
                     query.getOperatingHours(),
                     pageRequest
-            );
+            )
+            : trashRepository.findAll(pageRequest);
+
+        List<Long> ids = page.getContent().stream().map(Trash::getId).toList();
+        Map<Long, Long> idToCount = new HashMap<>();
+        Map<Long, Double> idToAvg = new HashMap<>();
+        if (!ids.isEmpty()) {
+            trashCommentsRepository.countGroupByTrashId(ids)
+                    .forEach(row -> idToCount.put((Long) row[0], (Long) row[1]));
+            trashCommentsRepository.averageGroupByTrashId(ids)
+                    .forEach(row -> idToAvg.put((Long) row[0], (Double) row[1]));
         }
-        // 검색 조건이 없는 경우 전체 조회
-        return trashRepository.findAll(pageRequest);
+
+        return page.map(entity -> {
+            long count = idToCount.getOrDefault(entity.getId(), 0L);
+            Double avg = idToAvg.get(entity.getId());
+            return TrashResponseDto.toResponseDto(entity, count, avg);
+        });
     }
 
     public Optional<Trash> getOne(Long toiletId) {

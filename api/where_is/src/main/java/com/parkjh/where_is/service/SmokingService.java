@@ -3,6 +3,7 @@ package com.parkjh.where_is.service;
 import com.parkjh.where_is.domain.Smoking;
 import com.parkjh.where_is.dto.*;
 import com.parkjh.where_is.repository.SmokingRepository;
+import com.parkjh.where_is.repository.SmokingCommentsRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,11 +16,13 @@ import java.util.Optional;
 @Service
 public class SmokingService {
     private final SmokingRepository smokingRepository;
-    public SmokingService(SmokingRepository smokingRepository) {
+    private final SmokingCommentsRepository smokingCommentsRepository;
+    public SmokingService(SmokingRepository smokingRepository, SmokingCommentsRepository smokingCommentsRepository) {
         this.smokingRepository = smokingRepository;
+        this.smokingCommentsRepository = smokingCommentsRepository;
     }
 
-    public Page<Smoking> getList(SmokingSearchDto query) {
+    public Page<SmokingResponseDto> getList(SmokingSearchDto query) {
         Sort sort = "desc".equalsIgnoreCase(query.getOrder())
                 ? Sort.by(query.getSort()).descending()
                 : Sort.by(query.getSort()).ascending();
@@ -30,8 +33,8 @@ public class SmokingService {
                 sort
         );
         // 검색 조건이 있는 경우 동적 쿼리 생성
-        if (hasSearchCriteria(query)) {
-            return smokingRepository.findSmokingWithSearchCriteria(
+        Page<Smoking> page = hasSearchCriteria(query)
+            ? smokingRepository.findSmokingWithSearchCriteria(
                     query.getName(),
                     query.getLongitude(),
                     query.getLatitude(),
@@ -41,10 +44,24 @@ public class SmokingService {
                     query.getLotnoAddr(),
                     query.getOperatingHours(),
                     pageRequest
-            );
+            )
+            : smokingRepository.findAll(pageRequest);
+
+        List<Long> ids = page.getContent().stream().map(Smoking::getId).toList();
+        Map<Long, Long> idToCount = new HashMap<>();
+        Map<Long, Double> idToAvg = new HashMap<>();
+        if (!ids.isEmpty()) {
+            smokingCommentsRepository.countGroupBySmokingId(ids)
+                    .forEach(row -> idToCount.put((Long) row[0], (Long) row[1]));
+            smokingCommentsRepository.averageGroupBySmokingId(ids)
+                    .forEach(row -> idToAvg.put((Long) row[0], (Double) row[1]));
         }
-        // 검색 조건이 없는 경우 전체 조회
-        return smokingRepository.findAll(pageRequest);
+
+        return page.map(entity -> {
+            long count = idToCount.getOrDefault(entity.getId(), 0L);
+            Double avg = idToAvg.get(entity.getId());
+            return SmokingResponseDto.toResponseDto(entity, count, avg);
+        });
     }
 
     public Optional<Smoking> getOne(Long toiletId) {

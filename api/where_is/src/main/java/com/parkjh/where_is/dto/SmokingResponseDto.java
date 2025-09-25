@@ -16,8 +16,11 @@ public class SmokingResponseDto {
     private String roadnmAddr;
     private String lotnoAddr;
     private String operatingHours;
+    private String facilityImage;
     private LocalDateTime modDt;
     private LocalDateTime addDt;
+    private Long reviewCount;
+    private Double starRating;
 
     public SmokingResponseDto() {}
 
@@ -25,6 +28,7 @@ public class SmokingResponseDto {
             Long id, String name, String longitude,
             String latitude, String managingAgency, String agencyContact,
             String roadnmAddr, String lotnoAddr, String operatingHours,
+            String facilityImage,
             LocalDateTime modDt, LocalDateTime addDt
     ) {
         this.id = id;
@@ -36,8 +40,23 @@ public class SmokingResponseDto {
         this.roadnmAddr = roadnmAddr;
         this.lotnoAddr = lotnoAddr;
         this.operatingHours = operatingHours;
+        this.facilityImage = facilityImage;
         this.modDt = modDt;
         this.addDt = addDt;
+    }
+
+    public SmokingResponseDto(
+            Long id, String name, String longitude,
+            String latitude, String managingAgency, String agencyContact,
+            String roadnmAddr, String lotnoAddr, String operatingHours,
+            String facilityImage,
+            LocalDateTime modDt, LocalDateTime addDt,
+            Long reviewCount, Double starRating
+    ) {
+        this(id, name, longitude, latitude, managingAgency, agencyContact,
+                roadnmAddr, lotnoAddr, operatingHours, facilityImage, modDt, addDt);
+        this.reviewCount = reviewCount;
+        this.starRating = starRating;
     }
 
     public static SmokingResponseDto toResponseDto(Smoking entity) {
@@ -51,8 +70,29 @@ public class SmokingResponseDto {
                 entity.getRoadnmAddr(),
                 entity.getLotnoAddr(),
                 entity.getOperatingHours(),
+                entity.getFacilityImage(),
                 entity.getAddDt(),
                 entity.getModDt()
+        );
+    }
+
+    public static SmokingResponseDto toResponseDto(Smoking entity, Long reviewCount, Double starRating) {
+        Double safeAvg = (starRating == null) ? 0.0 : Math.round(starRating * 10.0) / 10.0;
+        return new SmokingResponseDto(
+                entity.getId(),
+                entity.getName(),
+                entity.getLongitude(),
+                entity.getLatitude(),
+                entity.getManagingAgency(),
+                entity.getAgencyContact(),
+                entity.getRoadnmAddr(),
+                entity.getLotnoAddr(),
+                entity.getOperatingHours(),
+                entity.getFacilityImage(),
+                entity.getAddDt(),
+                entity.getModDt(),
+                reviewCount,
+                safeAvg
         );
     }
 }

@@ -13,6 +13,7 @@ public class SmokingRequestDto {
     protected String roadnmAddr;
     protected String lotnoAddr;
     protected String operatingHours;
+    protected String facilityImage;
 
     // 기본 생성자 (Spring Boot 파라미터 바인딩용)
     public SmokingRequestDto() {}
@@ -20,7 +21,7 @@ public class SmokingRequestDto {
     public SmokingRequestDto(
             String name, String longitude, String latitude,
             String managingAgency, String agencyContact, String roadnmAddr,
-            String lotnoAddr, String operatingHours
+            String lotnoAddr, String operatingHours, String facilityImage
     ) {
         this.name = name;
         this.longitude = longitude;
@@ -30,6 +31,7 @@ public class SmokingRequestDto {
         this.roadnmAddr = roadnmAddr;
         this.lotnoAddr = lotnoAddr;
         this.operatingHours = operatingHours;
+        this.facilityImage = facilityImage;
     }
 
     public Smoking toEntity() {

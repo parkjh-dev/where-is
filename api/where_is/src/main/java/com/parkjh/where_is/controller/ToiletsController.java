@@ -28,7 +28,7 @@ public class ToiletsController extends BaseController {
 
     @GetMapping
     public ResponseEntity<ApiResponseDto<?>> readToilets(ToiletsSearchDto query) {
-        Page<Toilets> result = toiletsService.getList(query);
+        Page<ToiletsResponseDto> result = toiletsService.getList(query);
         return successResponse(result);
     }
 

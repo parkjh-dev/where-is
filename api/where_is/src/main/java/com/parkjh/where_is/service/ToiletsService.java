@@ -3,6 +3,7 @@ package com.parkjh.where_is.service;
 import com.parkjh.where_is.domain.Toilets;
 import com.parkjh.where_is.dto.*;
 import com.parkjh.where_is.repository.ToiletsRepository;
+import com.parkjh.where_is.repository.ToiletsCommentsRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -15,11 +16,13 @@ import java.util.Optional;
 @Service
 public class ToiletsService {
     private final ToiletsRepository toiletsRepository;
-    public ToiletsService(ToiletsRepository toiletsRepository) {
+    private final ToiletsCommentsRepository toiletsCommentsRepository;
+    public ToiletsService(ToiletsRepository toiletsRepository, ToiletsCommentsRepository toiletsCommentsRepository) {
         this.toiletsRepository = toiletsRepository;
+        this.toiletsCommentsRepository = toiletsCommentsRepository;
     }
 
-    public Page<Toilets> getList(ToiletsSearchDto query) {
+    public Page<ToiletsResponseDto> getList(ToiletsSearchDto query) {
         Sort sort = "desc".equalsIgnoreCase(query.getOrder())
                 ? Sort.by(query.getSort()).descending()
                 : Sort.by(query.getSort()).ascending();
@@ -30,8 +33,8 @@ public class ToiletsService {
                 sort
         );
         // 검색 조건이 있는 경우 동적 쿼리 생성
-        if (hasSearchCriteria(query)) {
-            return toiletsRepository.findToiletsWithSearchCriteria(
+        Page<Toilets> page = hasSearchCriteria(query)
+            ? toiletsRepository.findToiletsWithSearchCriteria(
                     query.getName(),
                     query.getLongitude(),
                     query.getLatitude(),
@@ -41,14 +44,40 @@ public class ToiletsService {
                     query.getLotnoAddr(),
                     query.getOperatingHours(),
                     pageRequest
-            );
+            )
+            : toiletsRepository.findAll(pageRequest);
+
+        // 배치 집계: 현재 페이지의 ID 목록을 한 번에 집계
+        List<Long> ids = page.getContent().stream().map(Toilets::getId).toList();
+        Map<Long, Long> idToCount = new HashMap<>();
+        Map<Long, Double> idToAvg = new HashMap<>();
+        if (!ids.isEmpty()) {
+            toiletsCommentsRepository.countGroupByToiletsId(ids)
+                    .forEach(row -> idToCount.put((Long) row[0], (Long) row[1]));
+            toiletsCommentsRepository.averageGroupByToiletsId(ids)
+                    .forEach(row -> idToAvg.put((Long) row[0], (Double) row[1]));
         }
-        // 검색 조건이 없는 경우 전체 조회
-        return toiletsRepository.findAll(pageRequest);
+
+        return page.map(entity -> {
+            long count = idToCount.getOrDefault(entity.getId(), 0L);
+            Double avg = idToAvg.get(entity.getId());
+            return ToiletsResponseDto.toResponseDto(entity, count, avg);
+        });
     }
 
     public Optional<Toilets> getOne(Long toiletId) {
         return toiletsRepository.findById(toiletId);
+    }
+
+    public Optional<ToiletsResponseDto> getOneWithStats(Long toiletId) {
+        Optional<Toilets> entityOpt = toiletsRepository.findById(toiletId);
+        if (entityOpt.isEmpty()) {
+            return Optional.empty();
+        }
+        Toilets entity = entityOpt.get();
+        long reviewCount = toiletsCommentsRepository.countByToiletsId(toiletId);
+        Double avg = toiletsCommentsRepository.findAverageRatingByToiletsId(toiletId);
+        return Optional.of(ToiletsResponseDto.toResponseDto(entity, reviewCount, avg));
     }
 
     public ToiletsResponseDto save(ToiletsRequestDto request) {

@@ -15,8 +15,11 @@ public class ToiletsResponseDto {
     private String roadnmAddr;
     private String lotnoAddr;
     private String operatingHours;
+    private String facilityImage;
     private LocalDateTime modDt;
     private LocalDateTime addDt;
+    private Long reviewCount;
+    private Double starRating;
 
     public ToiletsResponseDto() {}
 
@@ -24,6 +27,7 @@ public class ToiletsResponseDto {
             Long id, String name, String longitude,
             String latitude, String managingAgency, String agencyContact,
             String roadnmAddr, String lotnoAddr, String operatingHours,
+            String facilityImage,
             LocalDateTime modDt, LocalDateTime addDt
     ) {
         this.id = id;
@@ -35,8 +39,23 @@ public class ToiletsResponseDto {
         this.roadnmAddr = roadnmAddr;
         this.lotnoAddr = lotnoAddr;
         this.operatingHours = operatingHours;
+        this.facilityImage = facilityImage;
         this.modDt = modDt;
         this.addDt = addDt;
+    }
+
+    public ToiletsResponseDto(
+            Long id, String name, String longitude,
+            String latitude, String managingAgency, String agencyContact,
+            String roadnmAddr, String lotnoAddr, String operatingHours,
+            String facilityImage,
+            LocalDateTime modDt, LocalDateTime addDt,
+            Long reviewCount, Double starRating
+    ) {
+        this(id, name, longitude, latitude, managingAgency, agencyContact,
+                roadnmAddr, lotnoAddr, operatingHours, facilityImage, modDt, addDt);
+        this.reviewCount = reviewCount;
+        this.starRating = starRating;
     }
 
     public static ToiletsResponseDto toResponseDto(Toilets entity) {
@@ -50,8 +69,30 @@ public class ToiletsResponseDto {
                 entity.getRoadnmAddr(),
                 entity.getLotnoAddr(),
                 entity.getOperatingHours(),
+                entity.getFacilityImage(),
                 entity.getAddDt(),
                 entity.getModDt()
+        );
+    }
+
+    public static ToiletsResponseDto toResponseDto(Toilets entity, Long reviewCount, Double starRating) {
+        // 별점 null일 경우 0.0으로 방어
+        Double safeAvg = (starRating == null) ? 0.0 : Math.round(starRating * 10.0) / 10.0;
+        return new ToiletsResponseDto(
+                entity.getId(),
+                entity.getName(),
+                entity.getLongitude(),
+                entity.getLatitude(),
+                entity.getManagingAgency(),
+                entity.getAgencyContact(),
+                entity.getRoadnmAddr(),
+                entity.getLotnoAddr(),
+                entity.getOperatingHours(),
+                entity.getFacilityImage(),
+                entity.getAddDt(),
+                entity.getModDt(),
+                reviewCount,
+                safeAvg
         );
     }
 }

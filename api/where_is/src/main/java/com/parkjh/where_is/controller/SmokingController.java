@@ -28,7 +28,7 @@ public class SmokingController extends BaseController {
 
     @GetMapping
     public ResponseEntity<ApiResponseDto<?>> readSmoking(SmokingSearchDto query) {
-        Page<Smoking> result = smokingService.getList(query);
+        Page<SmokingResponseDto> result = smokingService.getList(query);
         return successResponse(result);
     }
 

@@ -31,7 +31,7 @@ public class TrashController extends BaseController {
 
     @GetMapping
     public ResponseEntity<ApiResponseDto<?>> readTrash(TrashSearchDto query) {
-        Page<Trash> result = trashService.getList(query);
+        Page<TrashResponseDto> result = trashService.getList(query);
         return successResponse(result);
     }
 
